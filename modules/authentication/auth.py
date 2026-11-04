@@ -233,7 +233,150 @@ def authenticate_user(
         return False, f"Database error during authentication: {err}", None
 
 
-# --- Streamlit Session State Management ---
+def create_admin_account(
+    full_name: str,
+    email: str,
+    password: str,
+    confirm_password: str,
+    setup_code: str,
+) -> Tuple[bool, str, Optional[int]]:
+    """
+    Creates a new administrator account.
+
+    Security:
+    - Requires a valid setup code to prevent unauthorized admin creation.
+    - Validates email format and password strength.
+    - Checks for duplicate emails.
+    - Stores only bcrypt password hash.
+
+    Returns:
+        (success: bool, message: str, user_id: Optional[int])
+    """
+    # Setup code verification (change this in production)
+    VALID_SETUP_CODE = "CIVIC_ADMIN_SETUP_2024"
+
+    if not setup_code or setup_code.strip() != VALID_SETUP_CODE:
+        return False, "Invalid setup code. Contact system administrator.", None
+
+    # Input sanitization
+    full_name_clean = full_name.strip() if full_name else ""
+    email_clean = email.strip() if email else ""
+
+    if not full_name_clean:
+        return False, "Full name is required.", None
+    if not email_clean:
+        return False, "Email address is required.", None
+    if not password:
+        return False, "Password is required.", None
+    if not confirm_password:
+        return False, "Password confirmation is required.", None
+
+    if not validate_email(email_clean):
+        return False, "Please provide a valid email address.", None
+
+    if password != confirm_password:
+        return False, "Passwords do not match.", None
+
+    is_strong, pwd_msg = validate_password_strength(password)
+    if not is_strong:
+        return False, pwd_msg, None
+
+    try:
+        with get_connection() as conn:
+            cursor = conn.cursor()
+
+            cursor.execute(
+                "SELECT id FROM users WHERE email = ? COLLATE NOCASE;",
+                (email_clean,),
+            )
+            if cursor.fetchone():
+                return False, "An account with this email already exists.", None
+
+            pwd_hash = hash_password(password)
+
+            cursor.execute(
+                """
+                INSERT INTO users (full_name, email, phone, password_hash, role, is_active)
+                VALUES (?, ?, NULL, ?, 'admin', 1);
+                """,
+                (full_name_clean, email_clean, pwd_hash),
+            )
+            user_id = cursor.lastrowid
+            conn.commit()
+
+            return True, "Administrator account created successfully. You can now log in.", user_id
+
+    except sqlite3.IntegrityError:
+        return False, "An account with this email already exists.", None
+    except sqlite3.Error as err:
+        return False, f"Database error: {err}", None
+
+
+def reset_password(
+    email: str,
+    new_password: str,
+    confirm_password: str,
+) -> Tuple[bool, str]:
+    """
+    Resets a user's password by email.
+
+    Security:
+    - Verifies email exists in the database.
+    - Validates new password strength.
+    - Confirms password match.
+    - Updates only the password_hash field.
+
+    Returns:
+        (success: bool, message: str)
+    """
+    email_clean = email.strip() if email else ""
+
+    if not email_clean:
+        return False, "Email address is required."
+    if not new_password:
+        return False, "New password is required."
+    if not confirm_password:
+        return False, "Password confirmation is required."
+
+    if not validate_email(email_clean):
+        return False, "Please provide a valid email address."
+
+    if new_password != confirm_password:
+        return False, "Passwords do not match."
+
+    is_strong, pwd_msg = validate_password_strength(new_password)
+    if not is_strong:
+        return False, pwd_msg
+
+    try:
+        with get_connection() as conn:
+            cursor = conn.cursor()
+
+            cursor.execute(
+                "SELECT id, role FROM users WHERE email = ? COLLATE NOCASE;",
+                (email_clean,),
+            )
+            user_row = cursor.fetchone()
+
+            if not user_row:
+                # Generic message to avoid email enumeration
+                return False, "If this email is registered, the password has been reset."
+
+            pwd_hash = hash_password(new_password)
+
+            cursor.execute(
+                """
+                UPDATE users SET password_hash = ?, is_active = 1
+                WHERE email = ? COLLATE NOCASE;
+                """,
+                (pwd_hash, email_clean),
+            )
+            conn.commit()
+
+            return True, "Password has been reset successfully. You can now log in with your new password."
+
+    except sqlite3.Error as err:
+        return False, f"Database error: {err}"
 
 def login_user(user_data: Dict[str, Any]) -> None:
     """

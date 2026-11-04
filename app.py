@@ -45,6 +45,7 @@ from modules.analytics.dashboard import (
 )
 from modules.authentication.auth import (
     authenticate_user,
+    create_admin_account,
     get_current_user,
     is_admin,
     is_authenticated,
@@ -52,6 +53,7 @@ from modules.authentication.auth import (
     login_user,
     logout_user,
     register_citizen,
+    reset_password,
 )
 from modules.citizen.complaints import (
     get_citizen_complaint_details,
@@ -148,7 +150,9 @@ def render_auth_view():
     col_left, col_center, col_right = st.columns([1, 2, 1])
 
     with col_center:
-        tab_login, tab_register = st.tabs(["Sign In", "Create Citizen Account"])
+        tab_login, tab_register, tab_admin, tab_forgot = st.tabs(
+            ["Sign In", "Create Citizen Account", "Create Admin Account", "Forgot Password"]
+        )
 
         # TAB 1: LOGIN
         with tab_login:
@@ -173,9 +177,8 @@ def render_auth_view():
                             st.error(message)
 
             st.info(
-                "🛡️ **Municipal Authority Access:** Municipal administrators use designated credentials. "
+                "Municipal Authority Access: Municipal administrators use designated credentials. "
                 "Staff accounts are provisioned securely by IT administration.",
-                icon="ℹ️",
             )
 
         # TAB 2: CITIZEN REGISTRATION
@@ -209,7 +212,76 @@ def render_auth_view():
                     else:
                         st.error(message)
 
-            st.caption("🔒 Public registration creates Citizen accounts only. Administrator roles are restricted.")
+            st.caption("Public registration creates Citizen accounts only. Administrator roles are restricted.")
+
+        # TAB 3: CREATE ADMIN ACCOUNT
+        with tab_admin:
+            st.subheader("Create Administrator Account")
+            st.caption("Create a new administrator account using a setup code.")
+
+            with st.form("create_admin_form", clear_on_submit=False):
+                admin_name = st.text_input("Full Name", placeholder="e.g., Admin Name")
+                admin_email = st.text_input("Admin Email", placeholder="e.g., admin@city.gov")
+                admin_password = st.text_input(
+                    "Password",
+                    type="password",
+                    help="Must be at least 8 characters and include at least one letter and one number.",
+                )
+                admin_confirm = st.text_input("Confirm Password", type="password")
+                admin_setup_code = st.text_input(
+                    "Setup Code",
+                    type="password",
+                    help="Enter the administrator setup code provided by IT.",
+                )
+
+                admin_submitted = st.form_submit_button("Create Admin Account", use_container_width=True, type="primary")
+
+                if admin_submitted:
+                    success, message, user_id = create_admin_account(
+                        full_name=admin_name,
+                        email=admin_email,
+                        password=admin_password,
+                        confirm_password=admin_confirm,
+                        setup_code=admin_setup_code,
+                    )
+                    if success:
+                        st.success(f"{message} Please switch to the 'Sign In' tab to log in.")
+                    else:
+                        st.error(message)
+
+            st.caption("Setup code required. Contact IT administration for the code.")
+
+        # TAB 4: FORGOT PASSWORD
+        with tab_forgot:
+            st.subheader("Reset Password")
+            st.caption("Enter your email and set a new password.")
+
+            with st.form("forgot_password_form", clear_on_submit=False):
+                forgot_email = st.text_input("Email Address", placeholder="name@example.com").strip()
+                forgot_new_password = st.text_input(
+                    "New Password",
+                    type="password",
+                    help="Must be at least 8 characters and include at least one letter and one number.",
+                )
+                forgot_confirm = st.text_input("Confirm New Password", type="password")
+
+                forgot_submitted = st.form_submit_button("Reset Password", use_container_width=True, type="primary")
+
+                if forgot_submitted:
+                    if not forgot_email or not forgot_new_password or not forgot_confirm:
+                        st.error("All fields are required.")
+                    else:
+                        success, message = reset_password(
+                            email=forgot_email,
+                            new_password=forgot_new_password,
+                            confirm_password=forgot_confirm,
+                        )
+                        if success:
+                            st.success(message)
+                        else:
+                            st.error(message)
+
+            st.caption("Works for both citizen and administrator accounts.")
 
 
 # ---------------------------------------------------------
