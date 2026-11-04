@@ -1,7 +1,80 @@
-.env
+# Virtual environments
 .venv/
-backend/.env
-backend/civic_issues.db
-backend/uploads/
-backend/__pycache__/
+.streamlit-venv/
 backend/.venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+database/*.db
+database/*.sqlite
+database/*.sqlite3
+
+# Database backups
+*.bak
+*.backup*
+*.db.bak
+*.db.backup*
+database/*.bak
+database/*.backup*
+
+# Uploaded files (actual complaint images)
+uploads/
+backend/uploads/
+
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# Temporary files
+*.log
+*.tmp
+*.temp
+streamlit_err.txt
+streamlit_out.txt
+
+# Screenshots and generated images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.webp
+!assets/
+!assets/**
+
+# Test files
+test_*.py
+*_test.py
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Generated reports
+*.csv
+*.xlsx
+*.pdf
