@@ -1,0 +1,7 @@
+.env
+.venv/
+backend/.env
+backend/civic_issues.db
+backend/uploads/
+backend/__pycache__/
+backend/.venv/
