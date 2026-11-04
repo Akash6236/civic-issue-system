@@ -1,4 +1,4 @@
-"""
+f"""
 Authentication Module
 AI-Powered Civic Issue Reporting and Management System
 
@@ -253,7 +253,7 @@ def create_admin_account(
         (success: bool, message: str, user_id: Optional[int])
     """
     # Setup code verification (change this in production)
-    VALID_SETUP_CODE = "CIVIC_ADMIN_SETUP_2024"
+    VALID_SETUP_CODE = "nmit2026"
 
     if not setup_code or setup_code.strip() != VALID_SETUP_CODE:
         return False, "Invalid setup code. Contact system administrator.", None

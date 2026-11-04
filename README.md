@@ -21,24 +21,28 @@ A college mini-project prototype aligned with the supplied project presentation.
 
 ## Run on Windows (PowerShell)
 1. Extract the ZIP, then open the `civic-issue-system` folder in VS Code.
-2. Open a terminal, move into `backend`, and configure a signing key and initial administrator credentials:
+2. Open a terminal and run the Streamlit app:
 
    ```powershell
-   cd backend
-   py -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   python -m pip install -r requirements.txt
-   $env:CIVIC_SECRET_KEY = py -c "import secrets; print(secrets.token_urlsafe(48))"
-   $env:CIVIC_ADMIN_EMAIL = Read-Host "Initial administrator email"
-   $env:CIVIC_ADMIN_PASSWORD = Read-Host "Initial administrator password (at least 12 characters)"
-   python -m uvicorn main:app --reload
+   python -m streamlit run app.py --server.port 8501 --server.headless true
    ```
 
-   If PowerShell blocks activation, run `python -m pip install -r requirements.txt` without activating, then set the same environment variables and run `python -m uvicorn main:app --reload` from the backend folder. These values are required; the server will refuse to start if they are missing or too short. The administrator password configured here is applied whenever the server starts, so change it through `CIVIC_ADMIN_PASSWORD` and restart to rotate it.
-3. Open `frontend/index.html` in a browser, or use the VS Code Live Server extension. Keep the backend running at `http://127.0.0.1:8000`.
-4. The API docs are at `http://127.0.0.1:8000/docs`.
+3. Open your browser to `http://localhost:8501`.
 
-For repeat runs, you can copy `backend/.env.example` to `backend/.env`, fill in all required values, then start with `python -m uvicorn main:app --env-file .env --reload`. Do not commit `.env`. Existing databases created by an earlier version have the known demo administrator disabled unless its email is explicitly configured as the initial administrator.
+## Administrator Credentials
+A single administrator account is pre-configured for this project:
+
+| Field | Value |
+|-------|-------|
+| Name | Rudraksh |
+| Email | `1nt25mc103691.akash@nmit.ac.in` |
+| Password | `Rudraksh@nmit2026` |
+| Setup code | `nmit2026` |
+
+This account has full administrator access. Use it to review complaints, update statuses, manage reports, and access analytics.
+
+To create additional administrators or reset passwords, use the "Create Admin Account" and "Forgot Password" tabs in the app.
+
 
 ## Optional MySQL configuration
 SQLite is the default so the project can run locally without database setup. For MySQL, create a database named `civic_issues`, install a MySQL driver (`python -m pip install pymysql`), and set the environment variable before starting the API:
