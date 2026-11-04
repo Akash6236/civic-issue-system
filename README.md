@@ -19,15 +19,32 @@ A college mini-project prototype aligned with the supplied project presentation.
 - A modern browser
 - VS Code recommended
 
+## Install Dependencies
+Create and activate a virtual environment, then install all required packages:
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+```
+
 ## Run on Windows (PowerShell)
 1. Extract the ZIP, then open the `civic-issue-system` folder in VS Code.
-2. Open a terminal and run the Streamlit app:
+2. Open a terminal, create and activate the virtual environment, and install dependencies:
+
+   ```powershell
+   py -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   python -m pip install -r requirements.txt
+   ```
+
+3. Run the Streamlit app:
 
    ```powershell
    python -m streamlit run app.py --server.port 8501 --server.headless true
    ```
 
-3. Open your browser to `http://localhost:8501`.
+4. Open your browser to `http://localhost:8501`.
 
 ## Administrator Credentials
 A single administrator account is pre-configured for this project:
