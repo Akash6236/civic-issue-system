@@ -120,13 +120,11 @@ def submit_complaint(
     if longitude is not None and not (-180.0 <= longitude <= 180.0):
         return False, "Longitude must be between -180 and 180.", None
 
-    # Normalize location_source: strip whitespace, uppercase, convert empty to None
+    # Normalize location_source: strip whitespace, convert empty to None
     if location_source is not None:
         location_source = location_source.strip()
         if location_source == "":
             location_source = None
-        else:
-            location_source = location_source.upper()
 
     # Validate location_source against schema CHECK constraint
     valid_sources = (None, "GPS", "EXIF", "Manual")

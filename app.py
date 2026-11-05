@@ -100,6 +100,8 @@ CITIZEN_NAV_OPTIONS = [
     "🏠 Overview",
     "📝 Report an Issue",
     "📄 My Reports",
+    "📍 Track Complaints",
+    "📊 My Activity",
     "👤 Profile",
 ]
 ADMIN_NAV_OPTIONS = [
@@ -307,7 +309,7 @@ def render_citizen_dashboard(user: dict):
             "My Activity",
             use_container_width=True,
             on_click=set_citizen_page,
-            args=("My Reports",),
+            args=("My Activity",),
         )
     section_divider()
     st.subheader("Recent Submissions")
@@ -404,7 +406,7 @@ def render_citizen_report_issue(user: dict):
         """
         if comparison["warning_message"]:
             ai_box_html += f"""
-            <div style="margin-top:0.5rem;padding:0.5rem;background-color:#E9E2D5;border:1px solid #D6C5A5;border-radius:8px;font-size:0.85rem;color:#303A32;">
+            <div style="margin-top:0.5rem;padding:0.5rem;background-color:#E9E2D5;border:1px solid #E2E5DC;border-radius:8px;font-size:0.85rem;color:#303A32;">
                 <span style="font-weight:700;">⚠</span> {comparison["warning_message"]}
             </div>
             """
@@ -1491,6 +1493,10 @@ def main():
                 render_citizen_report_issue(current_user)
             elif nav_choice == "📄 My Reports":
                 render_citizen_my_complaints(current_user)
+            elif nav_choice == "📍 Track Complaints":
+                render_citizen_complaint_map(current_user)
+            elif nav_choice == "📊 My Activity":
+                render_citizen_analytics(current_user)
             elif nav_choice == "👤 Profile":
                 render_citizen_profile(current_user)
     else:

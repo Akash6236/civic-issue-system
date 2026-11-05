@@ -551,10 +551,27 @@ def render_location_picker(
     )
     st.session_state[f"{state_prefix}address"] = address_input
 
-    # Coordinate confirmation (display only, not manual entry)
+    # Automatically populate result from address input whenever an address is typed.
+    # This lets users submit with just a text address without needing to click confirm.
+    if address_input and address_input.strip():
+        result["location_address"] = address_input.strip()
+        result["location_source"] = "Manual"
+        result["location_confirmed"] = True
+        result["submitted"] = True
+        # Also capture coordinates if they are already in session state
+        current_lat = st.session_state.get(f"{state_prefix}lat")
+        current_lon = st.session_state.get(f"{state_prefix}lon")
+        if current_lat is not None and current_lon is not None:
+            result["latitude"] = current_lat
+            result["longitude"] = current_lon
+
+    # Location confirmation
     current_lat = st.session_state.get(f"{state_prefix}lat")
     current_lon = st.session_state.get(f"{state_prefix}lon")
-    if current_lat is not None and current_lon is not None:
+    has_coords = current_lat is not None and current_lon is not None
+    has_address = bool(address_input and address_input.strip())
+
+    if has_coords:
         source = st.session_state.get(f"{state_prefix}source", None)
         source_label = source if source else "Manual"
 
@@ -569,20 +586,35 @@ def render_location_picker(
             """,
             unsafe_allow_html=True,
         )
+    elif has_address:
+        st.markdown(
+            f"""
+            <div style="background-color:#E9E2D5;border:1px solid #E2E5DC;border-radius:8px;padding:1rem;margin:1rem 0;">
+                <h4 style="margin:0 0 0.5rem 0;color:#303A32;font-size:1rem;">Location Address</h4>
+                <p style="margin:0;color:#303A32;font-size:0.9rem;"><strong>Address:</strong> {address_input}</p>
+                <p style="margin:0;color:#6F786F;font-size:0.85rem;"><strong>Coordinates:</strong> Not provided</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-        # Confirm button
+    # Confirm button - shown when either coordinates or an address is provided
+    if has_coords or has_address:
         if st.button("✅ Use This Location", type="primary", use_container_width=True, key=f"{state_prefix}confirm_btn"):
             st.session_state[f"{state_prefix}confirmed"] = True
             result["latitude"] = current_lat
             result["longitude"] = current_lon
-            result["location_address"] = address_input or f"{current_lat:.6f}, {current_lon:.6f}"
+            if has_address:
+                result["location_address"] = address_input.strip()
+            elif has_coords:
+                result["location_address"] = f"{current_lat:.6f}, {current_lon:.6f}"
             result["location_source"] = st.session_state.get(f"{state_prefix}source", None)
             result["location_confirmed"] = True
             result["submitted"] = True
     else:
         st.info(
-            "No location selected yet. Use one of the methods above to choose "
-            "a location, or leave blank to submit without coordinates."
+            "No location selected yet. Enter an address or use one of the methods above "
+            "to choose a location, or leave blank to submit without coordinates."
         )
 
     # If previously confirmed, populate result
