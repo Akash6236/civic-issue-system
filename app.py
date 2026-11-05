@@ -75,6 +75,7 @@ from modules.ui.theme import (
     close_form_section,
     section_divider,
     confirmation_dialog,
+    portal_footer,
 )
 # ---------------------------------------------------------
 # Page Configuration & Premium Styling
@@ -431,19 +432,19 @@ def render_citizen_report_issue(user: dict):
             else {"warning_message": None}
         )
         ai_box_html = f"""
-        <div style="background-color:#DCE5D8;border:1px solid #E2E5DC;border-radius:10px;padding:1rem;margin:1rem 0;">
-            <span style="font-weight:700;color:#303A32;">AI Category Recommendation:</span>
-            <span style="font-size:1.05rem;font-weight:800;color:#303A32;margin-left:0.4rem;">{ai_suggestion}</span>
-            <span style="color:#6F786F;margin-left:0.5rem;font-size:0.9rem;">(Confidence: {int(ai_confidence * 100)}%, {ai_source})</span>
+        <div style="background-color:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:1rem;margin:1rem 0;">
+            <span style="font-weight:700;color:#1E293B;">AI Category Recommendation:</span>
+            <span style="font-size:1.05rem;font-weight:800;color:#1E293B;margin-left:0.4rem;">{ai_suggestion}</span>
+            <span style="color:#64748B;margin-left:0.5rem;font-size:0.9rem;">(Confidence: {int(ai_confidence * 100)}%, {ai_source})</span>
         """
         if comparison["warning_message"]:
             ai_box_html += f"""
-            <div style="margin-top:0.5rem;padding:0.5rem;background-color:#E9E2D5;border:1px solid #E2E5DC;border-radius:8px;font-size:0.85rem;color:#303A32;">
+            <div style="margin-top:0.5rem;padding:0.5rem;background-color:#FFFFFF;border:1px solid #E2E8F0;border-radius:8px;font-size:0.85rem;color:#1E293B;">
                 <span style="font-weight:700;">⚠</span> {comparison["warning_message"]}
             </div>
             """
         ai_box_html += f"""
-            <div style="font-size:0.82rem;color:#6F786F;margin-top:0.25rem;">
+            <div style="font-size:0.82rem;color:#64748B;margin-top:0.25rem;">
                 Local analysis suggests <em>{ai_suggestion}</em>. You can confirm or override this category below.
             </div>
         </div>
@@ -602,11 +603,11 @@ def render_citizen_my_complaints(user: dict):
                     old_st_text = h["old_status"] if h["old_status"] else "Initial"
                     st.markdown(
                         f"""
-                        <div style="border-left:3px solid #E2E5DC;padding-left:0.75rem;margin-bottom:0.75rem;">
+                        <div style="border-left:3px solid #BFDBFE;padding-left:0.75rem;margin-bottom:0.75rem;">
                             <strong>{old_st_text} &rarr; {h['new_status']}</strong>
-                            <span style="color:#6F786F;font-size:0.85rem;">({h['changed_at'][:16]})</span><br/>
-                            <span style="color:#303A32;font-size:0.85rem;">By {h['changed_by_name']} ({h['changed_by_role'].capitalize()})</span><br/>
-                            <em style="color:#303A32;font-size:0.85rem;">"{h['remarks'] or 'No remarks provided.'}"</em>
+                            <span style="color:#64748B;font-size:0.85rem;">({h['changed_at'][:16]})</span><br/>
+                            <span style="color:#1E293B;font-size:0.85rem;">By {h['changed_by_name']} ({h['changed_by_role'].capitalize()})</span><br/>
+                            <em style="color:#1E293B;font-size:0.85rem;">"{h['remarks'] or 'No remarks provided.'}"</em>
                         </div>
                         """,
                         unsafe_allow_html=True,
@@ -760,6 +761,16 @@ def render_admin_dashboard(user: dict):
         "Municipal Dashboard",
         f"Administrator: {user['full_name']} | Municipal Operations Command",
     )
+    st.markdown(
+        """
+        <section class="admin-hero">
+            <div class="admin-hero-kicker">CITY OPERATIONS · SERVICE DELIVERY</div>
+            <h2>Every report is a chance to improve the community.</h2>
+            <p>Review incoming concerns, coordinate action, and keep residents informed from one municipal workspace.</p>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
     stats = get_admin_dashboard_stats()
     # Compact KPI grid
     st.markdown('<div class="kpi-grid">', unsafe_allow_html=True)
@@ -813,10 +824,10 @@ def render_admin_dashboard(user: dict):
             for l in logs:
                 st.markdown(
                     f"""
-                    <div style="border-left:3px solid #657A62;padding-left:0.75rem;margin-bottom:0.75rem;">
-                        <span style="color:#6F786F;font-size:0.85rem;">{l['action_timestamp'][:16]}</span><br/>
-                        <strong style="color:#303A32;">{l['admin_name']}</strong>: {l['action_type']}<br/>
-                        <span style="color:#303A32;font-size:0.85rem;">{l['action_details']}</span>
+                    <div style="border-left:3px solid #3B82F6;padding-left:0.75rem;margin-bottom:0.75rem;">
+                        <span style="color:#64748B;font-size:0.85rem;">{l['action_timestamp'][:16]}</span><br/>
+                        <strong style="color:#1E293B;">{l['admin_name']}</strong>: {l['action_type']}<br/>
+                        <span style="color:#1E293B;font-size:0.85rem;">{l['action_details']}</span>
                     </div>
                     """,
                     unsafe_allow_html=True,
@@ -978,7 +989,7 @@ def render_admin_complaint_management(user: dict):
         with st.container():
             st.markdown(
                 f"""
-                <div style="background-color:#F5F6F1;padding:0.75rem;border-radius:10px;border:1px solid #E2E5DC;margin-bottom:1rem;">
+                <div style="background-color:#F8FAFC;padding:0.75rem;border-radius:10px;border:1px solid #E2E8F0;margin-bottom:1rem;">
                     <strong>Citizen:</strong> {complaint_detail['citizen_name']} | 
                     <strong>Email:</strong> {complaint_detail['citizen_email']} | 
                     <strong>Phone:</strong> {complaint_detail['citizen_phone'] or 'Not provided'}
@@ -1110,11 +1121,11 @@ def render_admin_complaint_management(user: dict):
             old_label = h["old_status"] if h["old_status"] else "Submission"
             st.markdown(
                 f"""
-                <div style="border-left:3px solid #E2E5DC;padding-left:0.75rem;margin-bottom:0.75rem;">
+                <div style="border-left:3px solid #BFDBFE;padding-left:0.75rem;margin-bottom:0.75rem;">
                     <strong>{old_label} &rarr; {h['new_status']}</strong>
-                    <span style="color:#6F786F;font-size:0.85rem;">({h['changed_at'][:16]})</span><br/>
-                    <span style="color:#303A32;font-size:0.85rem;">By {h['changed_by_name']} ({h['changed_by_role'].capitalize()})</span><br/>
-                    <em style="color:#303A32;font-size:0.85rem;">"{h['remarks'] or 'No remarks'}"</em>
+                    <span style="color:#64748B;font-size:0.85rem;">({h['changed_at'][:16]})</span><br/>
+                    <span style="color:#1E293B;font-size:0.85rem;">By {h['changed_by_name']} ({h['changed_by_role'].capitalize()})</span><br/>
+                    <em style="color:#1E293B;font-size:0.85rem;">"{h['remarks'] or 'No remarks'}"</em>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -1208,18 +1219,18 @@ def render_admin_duplicate_review(user: dict):
                 match_id = m["match_id"]
                 score = m["similarity_score"]
                 status = m["status"]
-                score_color = "#657A62" if score >= 75.0 else ("#718B69" if score >= 60.0 else "#6F786F")
+                score_color = "#1E40AF" if score >= 75.0 else ("#3B82F6" if score >= 60.0 else "#64748B")
                 with st.container():
                     st.markdown(
                         f"""
-                        <div style="background-color:#FFFFFF;border:1px solid #E2E5DC;border-radius:8px;padding:1rem;margin-bottom:1rem;">
+                        <div style="background-color:#FFFFFF;border:1px solid #E2E8F0;border-radius:8px;padding:1rem;margin-bottom:1rem;">
                             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
-                                <span style="font-size:1.1rem;font-weight:700;color:#303A32;">Pair #{match_id}</span>
+                                <span style="font-size:1.1rem;font-weight:700;color:#1E293B;">Pair #{match_id}</span>
                                 <div>
                                     <span style="background-color:{score_color};color:#FFFFFF;padding:0.2rem 0.6rem;border-radius:9999px;font-weight:700;font-size:0.85rem;">
                                         {score}% Similarity
                                     </span>
-                                    <span style="margin-left:0.5rem;font-weight:600;color:#303A32;">
+                                    <span style="margin-left:0.5rem;font-weight:600;color:#1E293B;">
                                         {status}
                                     </span>
                                 </div>
@@ -1366,7 +1377,7 @@ def render_admin_analytics(user: dict):
             pct = round((loc["count"] / data["total_complaints"]) * 100.0, 1)
             st.markdown(
                 f"""
-                <div style="background-color:#FFFFFF;border:1px solid #E2E5DC;padding:0.6rem 0.8rem;border-radius:6px;margin-bottom:0.4rem;display:flex;justify-content:space-between;">
+                <div style="background-color:#FFFFFF;border:1px solid #E2E8F0;padding:0.6rem 0.8rem;border-radius:6px;margin-bottom:0.4rem;display:flex;justify-content:space-between;">
                     <span><strong>{loc['location_address'][:60]}</strong></span>
                     <span>{loc['count']} issues ({pct}%)</span>
                 </div>
@@ -1380,9 +1391,9 @@ def render_admin_analytics(user: dict):
         for c in data["recent_complaints"]:
             st.markdown(
                 f"""
-                <div style="background-color:#FFFFFF;border:1px solid #E2E5DC;padding:0.6rem 0.8rem;border-radius:6px;margin-bottom:0.4rem;display:flex;justify-content:space-between;">
+                <div style="background-color:#FFFFFF;border:1px solid #E2E8F0;padding:0.6rem 0.8rem;border-radius:6px;margin-bottom:0.4rem;display:flex;justify-content:space-between;">
                     <span><strong>#{c['id']} {c['title'][:40]}</strong> - {c['category']} - {c['status']}</span>
-                    <span style="color:#6F786F;font-size:0.85rem;">{c['created_at'][:16]}</span>
+                    <span style="color:#64748B;font-size:0.85rem;">{c['created_at'][:16]}</span>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -1412,12 +1423,12 @@ def render_admin_audit_logs(user: dict):
                 <div class="complaint-card" style="padding: 0.9rem; margin-bottom: 0.6rem;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <strong>{complaint_tag} - {l['action_type']}</strong>
-                        <span style="color: #6F786F; font-size: 0.85rem;">{l['action_timestamp']}</span>
+                        <span style="color: #64748B; font-size: 0.85rem;">{l['action_timestamp']}</span>
                     </div>
-                    <div style="color: #657A62; font-size: 0.88rem; margin: 0.25rem 0;">
+                    <div style="color: #1E40AF; font-size: 0.88rem; margin: 0.25rem 0;">
                         Admin: <strong>{l['admin_name']}</strong> ({l['admin_email']})
                     </div>
-                    <div style="color: #303A32; font-size: 0.9rem;">
+                    <div style="color: #1E293B; font-size: 0.9rem;">
                         {l['action_details']}
                     </div>
                 </div>
@@ -1436,7 +1447,7 @@ def render_sidebar(user: dict):
         st.markdown(f'<div class="sidebar-user-email secondary-text">{user["email"]}</div>', unsafe_allow_html=True)
         if user.get("role") == "admin":
             st.markdown(
-                '<span style="background-color:#DCE5D8;color:#303A32;font-weight:700;padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.8rem;border:1px solid #E2E5DC;">Administrator</span>',
+                '<span style="background-color:#DBEAFE;color:#1E40AF;font-weight:700;padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.8rem;border:1px solid #BFDBFE;">Administrator</span>',
                 unsafe_allow_html=True,
             )
             st.markdown('---')
@@ -1455,7 +1466,7 @@ def render_sidebar(user: dict):
             st.session_state["_admin_nav_page"] = nav_choice
         else:
             st.markdown(
-                '<span style="background-color:#E9E2D5;color:#303A32;font-weight:700;padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.8rem;border:1px solid #E2E5DC;">Citizen</span>',
+                '<span style="background-color:#EFF6FF;color:#1E40AF;font-weight:700;padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.8rem;border:1px solid #BFDBFE;">Citizen</span>',
                 unsafe_allow_html=True,
             )
             st.markdown('---')
@@ -1521,5 +1532,6 @@ def main():
                 render_citizen_profile(current_user)
     else:
         render_auth_view()
+    portal_footer(show_navigation=is_authenticated())
 if __name__ == "__main__":
     main()

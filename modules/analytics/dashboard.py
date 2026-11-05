@@ -15,15 +15,27 @@ import plotly.graph_objects as go
 
 from modules.database import get_connection
 
-# Visual theme colors matching our civic-tech palette
+# Status colors used consistently by charts and status badges.
 STATUS_COLORS = {
-    "Submitted": "#C49B59",
-    "Under Review": "#657A62",
-    "Approved": "#C49B59",
-    "In Progress": "#C49B59",
-    "Resolved": "#657A62",
-    "Rejected": "#B87568",
+    "Submitted": "#F59E0B",
+    "Under Review": "#3B82F6",
+    "Approved": "#16A34A",
+    "In Progress": "#3B82F6",
+    "Resolved": "#16A34A",
+    "Rejected": "#DC2626",
 }
+
+
+def _apply_chart_theme(fig: go.Figure) -> go.Figure:
+    """Apply the shared civic palette and readable axes to an analytics chart."""
+    fig.update_layout(
+        font=dict(family="Inter, Arial, sans-serif", color="#1E293B"),
+        paper_bgcolor="#FFFFFF",
+        plot_bgcolor="#FFFFFF",
+    )
+    fig.update_xaxes(gridcolor="#E2E8F0", zerolinecolor="#CBD5E1", linecolor="#CBD5E1")
+    fig.update_yaxes(gridcolor="#E2E8F0", zerolinecolor="#CBD5E1", linecolor="#CBD5E1")
+    return fig
 
 
 def get_citizen_analytics_data(user_id: int) -> Dict[str, Any]:
@@ -243,7 +255,7 @@ def build_monthly_resolved_vs_received_chart(
     if not monthly_list:
         fig = go.Figure()
         fig.update_layout(title=title, annotations=[{"text": "No Data Available", "showarrow": False}])
-        return fig
+        return _apply_chart_theme(fig)
 
     df = pd.DataFrame(monthly_list)
 
@@ -252,17 +264,17 @@ def build_monthly_resolved_vs_received_chart(
         name="Received",
         x=df["month"],
         y=df["received"],
-        marker_color="#657A62",
+        marker_color="#1E40AF",
     ))
     fig.add_trace(go.Bar(
         name="Resolved",
         x=df["month"],
         y=df["resolved"],
-        marker_color="#718B69",
+        marker_color="#16A34A",
     ))
 
     fig.update_layout(
-        title=dict(text=title, font=dict(size=16, color="#303A32")),
+        title=dict(text=title, font=dict(size=16, color="#1E293B")),
         barmode="group",
         xaxis=dict(title="Month"),
         yaxis=dict(title="Count", dtick=1),
@@ -270,7 +282,7 @@ def build_monthly_resolved_vs_received_chart(
         height=320,
         legend=dict(orientation="h", yanchor="bottom", y=-0.2, xanchor="center", x=0.5),
     )
-    return fig
+    return _apply_chart_theme(fig)
 
 
 def build_status_donut_chart(status_list: List[Dict[str, Any]], title: str = "Status Distribution"):
@@ -278,7 +290,7 @@ def build_status_donut_chart(status_list: List[Dict[str, Any]], title: str = "St
     if not status_list:
         fig = go.Figure()
         fig.update_layout(title=title, annotations=[{"text": "No Data Available", "showarrow": False}])
-        return fig
+        return _apply_chart_theme(fig)
 
     df = pd.DataFrame(status_list)
     colors = [STATUS_COLORS.get(s, "#CBD5E0") for s in df["status"]]
@@ -296,12 +308,12 @@ def build_status_donut_chart(status_list: List[Dict[str, Any]], title: str = "St
         ]
     )
     fig.update_layout(
-        title=dict(text=title, font=dict(size=16, color="#303A32")),
+        title=dict(text=title, font=dict(size=16, color="#1E293B")),
         margin=dict(l=20, r=20, t=40, b=20),
         legend=dict(orientation="h", yanchor="bottom", y=-0.2, xanchor="center", x=0.5),
         height=320,
     )
-    return fig
+    return _apply_chart_theme(fig)
 
 
 def build_category_bar_chart(category_list: List[Dict[str, Any]], title: str = "Issues by Category"):
@@ -309,7 +321,7 @@ def build_category_bar_chart(category_list: List[Dict[str, Any]], title: str = "
     if not category_list:
         fig = go.Figure()
         fig.update_layout(title=title, annotations=[{"text": "No Data Available", "showarrow": False}])
-        return fig
+        return _apply_chart_theme(fig)
 
     df = pd.DataFrame(category_list)
     df = df.sort_values(by="count", ascending=True)
@@ -321,8 +333,8 @@ def build_category_bar_chart(category_list: List[Dict[str, Any]], title: str = "
                 y=df["category"],
                 orientation="h",
                 marker=dict(
-                    color="#657A62",
-                    line=dict(color="#52674F", width=1),
+                    color="#3B82F6",
+                    line=dict(color="#1E40AF", width=1),
                 ),
                 text=df["count"],
                 textposition="auto",
@@ -330,13 +342,13 @@ def build_category_bar_chart(category_list: List[Dict[str, Any]], title: str = "
         ]
     )
     fig.update_layout(
-        title=dict(text=title, font=dict(size=16, color="#303A32")),
+        title=dict(text=title, font=dict(size=16, color="#1E293B")),
         xaxis=dict(title="Complaint Count", dtick=1),
         yaxis=dict(title=""),
         margin=dict(l=20, r=20, t=40, b=20),
         height=320,
     )
-    return fig
+    return _apply_chart_theme(fig)
 
 
 def build_monthly_trend_chart(monthly_list: List[Dict[str, Any]], title: str = "Monthly Complaint Inflow"):
@@ -344,7 +356,7 @@ def build_monthly_trend_chart(monthly_list: List[Dict[str, Any]], title: str = "
     if not monthly_list:
         fig = go.Figure()
         fig.update_layout(title=title, annotations=[{"text": "No Data Available", "showarrow": False}])
-        return fig
+        return _apply_chart_theme(fig)
 
     df = pd.DataFrame(monthly_list)
 
@@ -355,18 +367,17 @@ def build_monthly_trend_chart(monthly_list: List[Dict[str, Any]], title: str = "
                 y=df["count"],
                 mode="lines+markers",
                 fill="tozeroy",
-                fillcolor="rgba(36, 91, 69, 0.15)",
-                line=dict(color="#657A62", width=3),
-                marker=dict(size=8, color="#52674F"),
+                fillcolor="rgba(59, 130, 246, 0.14)",
+                line=dict(color="#1E40AF", width=3),
+                marker=dict(size=8, color="#3B82F6"),
             )
         ]
     )
     fig.update_layout(
-        title=dict(text=title, font=dict(size=16, color="#303A32")),
+        title=dict(text=title, font=dict(size=16, color="#1E293B")),
         xaxis=dict(title="Month (YYYY-MM)"),
         yaxis=dict(title="Reported Issues", dtick=1),
         margin=dict(l=20, r=20, t=40, b=20),
         height=320,
     )
-    return fig
-
+    return _apply_chart_theme(fig)

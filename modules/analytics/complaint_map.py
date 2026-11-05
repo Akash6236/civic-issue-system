@@ -40,12 +40,12 @@ OSM_ATTRIBUTION = (
 
 # Category -> Folium icon colour. Colours are purely visual; no personal data.
 CATEGORY_COLORS = {
-    "Garbage": "green",
+    "Garbage": "blue",
     "Road Damage": "orange",
-    "Water Leakage": "blue",
+    "Water Leakage": "lightblue",
     "Streetlight": "purple",
-    "Drainage": "lightblue",
-    "Public Sanitation": "darkred",
+    "Drainage": "cadetblue",
+    "Public Sanitation": "red",
     "Other": "gray",
 }
 
@@ -282,13 +282,13 @@ def render_admin_complaint_map(user: Dict[str, Any]) -> None:
     st.markdown(
         '<div class="map-legend">'
         '<strong>Legend:</strong> '
-        '<span style="color:#657A62;">■</span> Garbage · '
-        '<span style="color:#C49B59;">■</span> Road Damage · '
-        '<span style="color:#8299A0;">■</span> Water Leakage · '
-        '<span style="color:#657A62;">■</span> Streetlight · '
-        '<span style="color:#8299A0;">■</span> Drainage · '
-        '<span style="color:#B87568;">■</span> Public Sanitation · '
-        '<span style="color:#6F786F;">■</span> Other'
+        '<span style="color:#1E40AF;">■</span> Garbage · '
+        '<span style="color:#F59E0B;">■</span> Road Damage · '
+        '<span style="color:#60A5FA;">■</span> Water Leakage · '
+        '<span style="color:#7C3AED;">■</span> Streetlight · '
+        '<span style="color:#0891B2;">■</span> Drainage · '
+        '<span style="color:#DC2626;">■</span> Public Sanitation · '
+        '<span style="color:#64748B;">■</span> Other'
         '</div>',
         unsafe_allow_html=True,
     )
@@ -327,13 +327,13 @@ def render_citizen_complaint_map(user: Dict[str, Any]) -> None:
     st.markdown(
         '<div class="map-legend">'
         '<strong>Legend:</strong> '
-        '<span style="color:#657A62;">■</span> Garbage · '
-        '<span style="color:#C49B59;">■</span> Road Damage · '
-        '<span style="color:#8299A0;">■</span> Water Leakage · '
-        '<span style="color:#657A62;">■</span> Streetlight · '
-        '<span style="color:#8299A0;">■</span> Drainage · '
-        '<span style="color:#B87568;">■</span> Public Sanitation · '
-        '<span style="color:#6F786F;">■</span> Other'
+        '<span style="color:#1E40AF;">■</span> Garbage · '
+        '<span style="color:#F59E0B;">■</span> Road Damage · '
+        '<span style="color:#60A5FA;">■</span> Water Leakage · '
+        '<span style="color:#7C3AED;">■</span> Streetlight · '
+        '<span style="color:#0891B2;">■</span> Drainage · '
+        '<span style="color:#DC2626;">■</span> Public Sanitation · '
+        '<span style="color:#64748B;">■</span> Other'
         '</div>',
         unsafe_allow_html=True,
     )

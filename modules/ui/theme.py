@@ -2,22 +2,21 @@
 Centralized UI Styling Module
 AI-Powered Civic Issue Reporting and Management System
 
-Provides a consistent, minimal, elegant light-themed design system for the
+Provides a consistent, accessible blue-and-white design system for the
 entire civic technology platform.
 
 Design palette:
-- Primary forest green: #657A62
-- Deep green: #52674F
-- Accent green: #718B69
-- Main background: #F5F6F1
+- Primary blue: #1E40AF
+- Secondary blue: #3B82F6
+- Main background: #F8FAFC
 - Surface/cards: #FFFFFF
-- Primary text: #303A32
-- Secondary text: #6F786F
-- Borders: #E2E5DC
-- Soft green background: #DCE5D8
-- Warning: #C49B59
-- Danger: #B87568
-- Information: #8299A0
+- Primary text: #1E293B
+- Secondary text: #64748B
+- Borders: #E2E8F0
+- Soft blue background: #EFF6FF
+- Success: #16A34A
+- Warning: #F59E0B
+- Danger: #DC2626
 
 Typography: Inter (headings and body)
 """
@@ -31,36 +30,36 @@ from typing import Callable, Optional, Tuple
 
 COLORS = {
     # Backgrounds
-    "bg_primary": "#F5F6F1",       # Main page background
+    "bg_primary": "#F8FAFC",       # Main page background
     "bg_surface": "#FFFFFF",       # Cards, containers
     "bg_sidebar": "#FFFFFF",
-    "bg_soft": "#DCE5D8",          # Soft green background
+    "bg_soft": "#EFF6FF",          # Soft blue background
     # Accents
-    "accent_primary": "#657A62",   # Sage green - primary actions, headings
-    "accent_deep": "#52674F",      # Deep green
-    "accent_light": "#718B69",     # Accent green
-    "olive_muted": "#829078",      # Muted olive accent for civic-public service styling
+    "accent_primary": "#1E40AF",   # Primary actions and headings
+    "accent_deep": "#1E3A8A",      # Deep blue
+    "accent_light": "#3B82F6",     # Secondary blue
+    "olive_muted": "#60A5FA",      # Muted blue accent
     # Text
-    "text_primary": "#303A32",     # Charcoal - headings, primary text
-    "text_secondary": "#6F786F",   # Muted - secondary text, labels
+    "text_primary": "#1E293B",     # Slate - headings, primary text
+    "text_secondary": "#64748B",   # Muted - secondary text, labels
     "text_inverse": "#FFFFFF",
     # Supporting surfaces
-    "surface_sage": "#DCE5D8",     # Soft green
-    "surface_beige": "#E9E2D5",    # Warm beige
+    "surface_sage": "#DBEAFE",     # Soft blue
+    "surface_beige": "#EFF6FF",    # Pale blue
     # Borders
-    "border_light": "#E2E5DC",
-    "border_focus": "#657A62",
+    "border_light": "#E2E8F0",
+    "border_focus": "#3B82F6",
     # Status colors
-    "status_submitted": "#C49B59",
-    "status_under_review": "#657A62",
-    "status_approved": "#C49B59",
-    "status_in_progress": "#C49B59",
-    "status_resolved": "#657A62",
-    "status_rejected": "#B87568",
+    "status_submitted": "#F59E0B",
+    "status_under_review": "#3B82F6",
+    "status_approved": "#16A34A",
+    "status_in_progress": "#3B82F6",
+    "status_resolved": "#16A34A",
+    "status_rejected": "#DC2626",
     # Semantic colors
-    "warning": "#C49B59",
-    "danger": "#B87568",
-    "info": "#8299A0",
+    "warning": "#F59E0B",
+    "danger": "#DC2626",
+    "info": "#3B82F6",
 }
 
 # ---------------------------------------------------------
@@ -93,7 +92,7 @@ html, body, [data-testid="stAppViewContainer"] {
 
 /* Hide default Streamlit chrome */
 #MainMenu {visibility: hidden !important;}
-footer {visibility: hidden !important;}
+[data-testid="stFooter"] {visibility: hidden !important;}
 [data-testid="stDecoration"] {display: none !important;}
 
 /* Main content area - generous spacing, constrained width */
@@ -670,17 +669,17 @@ label {
 
 /* ===== CIVICPULSE EARTH-TONE REFRESH ===== */
 :root {
-    --earth-bg: #F4F2EA;
-    --earth-paper: #FCFBF7;
-    --earth-ink: #29352D;
-    --earth-muted: #72786B;
-    --earth-forest: #405940;
-    --earth-olive: #65744D;
-    --earth-sage: #E5E8DC;
-    --earth-sand: #EDE5D5;
-    --earth-clay: #A96546;
-    --earth-border: #E4E0D4;
-    --earth-shadow: 0 12px 32px rgba(48, 57, 43, 0.06);
+    --earth-bg: #F8FAFC;
+    --earth-paper: #FFFFFF;
+    --earth-ink: #1E293B;
+    --earth-muted: #64748B;
+    --earth-forest: #1E40AF;
+    --earth-olive: #3B82F6;
+    --earth-sage: #DBEAFE;
+    --earth-sand: #FEF3C7;
+    --earth-clay: #DC2626;
+    --earth-border: #E2E8F0;
+    --earth-shadow: 0 12px 32px rgba(30, 64, 175, 0.07);
 }
 
 html, body, [data-testid="stAppViewContainer"],
@@ -1015,9 +1014,9 @@ label, [data-testid="stWidgetLabel"] p {
     border: 1px solid rgba(255, 255, 255, 0.13);
     border-radius: 1.25rem;
     background:
-        radial-gradient(circle at 88% 18%, rgba(205, 190, 145, 0.26), transparent 25%),
-        linear-gradient(118deg, #344D3A 0%, #526849 60%, #69734E 100%);
-    box-shadow: 0 16px 36px rgba(47, 68, 48, 0.16);
+        radial-gradient(circle at 88% 18%, rgba(147, 197, 253, 0.3), transparent 25%),
+        linear-gradient(118deg, #1E3A8A 0%, #1E40AF 58%, #2563EB 100%);
+    box-shadow: 0 16px 36px rgba(30, 64, 175, 0.18);
 }
 
 .civic-hero:after {
@@ -1036,7 +1035,7 @@ label, [data-testid="stWidgetLabel"] p {
     position: relative;
     z-index: 1;
     margin-bottom: 0.65rem;
-    color: #D8DDC6 !important;
+    color: #DBEAFE !important;
     font-size: 0.68rem !important;
     font-weight: 700 !important;
     letter-spacing: 0.16em !important;
@@ -1058,8 +1057,332 @@ label, [data-testid="stWidgetLabel"] p {
     z-index: 1;
     max-width: 650px;
     margin: 0 !important;
-    color: #E4E6D8 !important;
+    color: #EFF6FF !important;
     font-size: 0.95rem !important;
+}
+
+.admin-hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.5rem, 3.5vw, 2.4rem);
+    margin: 0 0 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 1.2rem;
+    background:
+        radial-gradient(circle at 90% 15%, rgba(147, 197, 253, 0.3), transparent 26%),
+        linear-gradient(118deg, #172554 0%, #1E40AF 58%, #3B82F6 100%);
+    box-shadow: 0 16px 36px rgba(30, 64, 175, 0.17);
+}
+
+.admin-hero::after {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    right: -84px;
+    bottom: -142px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    box-shadow: 0 0 0 26px rgba(255,255,255,0.04), 0 0 0 54px rgba(255,255,255,0.025);
+}
+
+.admin-hero-kicker {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0.65rem;
+    color: #BFDBFE !important;
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.16em !important;
+}
+
+.admin-hero h2 {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 0 0.6rem !important;
+    color: #FFFFFF !important;
+    font-size: clamp(1.55rem, 3vw, 2.25rem) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.035em !important;
+}
+
+.admin-hero p {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 !important;
+    color: #DBEAFE !important;
+    font-size: 0.95rem !important;
+}
+
+/* Blue-and-white civic design system shared by citizen and admin pages. */
+html, body, [data-testid="stAppViewContainer"],
+[data-testid="stAppViewContainer"] > .main, .block-container {
+    background-color: #F8FAFC !important;
+    color: #1E293B !important;
+}
+
+[data-testid="stAppViewContainer"] {
+    background-image: linear-gradient(180deg, #FFFFFF 0, #F8FAFC 32rem) !important;
+}
+
+h1, h2, h3, h4, h5, h6, .page-title {
+    color: #1E293B !important;
+}
+
+p, span, div, label {
+    color: #1E293B;
+}
+
+p, .secondary-text, .page-subtitle, [data-testid="stCaptionContainer"] p {
+    color: #64748B !important;
+}
+
+.page-header {
+    border-bottom-color: #E2E8F0 !important;
+}
+
+.page-header-kicker {
+    color: #1E40AF !important;
+}
+
+.page-header-icon, .kpi-card .kpi-icon {
+    color: #1E40AF !important;
+    background: #EFF6FF !important;
+    border-color: #DBEAFE !important;
+}
+
+[data-testid="stSidebar"] {
+    background: #FFFFFF !important;
+    border-right-color: #E2E8F0 !important;
+    box-shadow: 6px 0 24px rgba(15, 23, 42, 0.035) !important;
+}
+
+.sidebar-brand {
+    color: #1E40AF !important;
+}
+
+.sidebar-user-name {
+    color: #1E293B !important;
+}
+
+.sidebar-user-email, .sidebar-section-label {
+    color: #64748B !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input:checked) {
+    color: #1E40AF !important;
+    background: #EFF6FF !important;
+    border-color: #DBEAFE !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input:checked) p,
+[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input:checked) span {
+    color: #1E40AF !important;
+}
+
+.stButton > button, [data-testid="stFormSubmitButton"] > button {
+    border-radius: 0.7rem !important;
+    transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease !important;
+}
+
+.stButton > button[kind="primary"],
+[data-testid="stFormSubmitButton"] > button[kind="primary"] {
+    background: #1E40AF !important;
+    border-color: #1E40AF !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 10px rgba(30, 64, 175, 0.16) !important;
+}
+
+.stButton > button[kind="primary"]:hover,
+[data-testid="stFormSubmitButton"] > button[kind="primary"]:hover {
+    background: #1D4ED8 !important;
+    border-color: #1D4ED8 !important;
+}
+
+.stButton > button[kind="secondary"],
+[data-testid="stFormSubmitButton"] > button[kind="secondary"] {
+    background: #FFFFFF !important;
+    border-color: #CBD5E1 !important;
+    color: #1E293B !important;
+}
+
+.stButton > button[kind="secondary"]:hover,
+[data-testid="stFormSubmitButton"] > button[kind="secondary"]:hover {
+    background: #EFF6FF !important;
+    border-color: #93C5FD !important;
+    color: #1E40AF !important;
+}
+
+.stTextInput > div > div > input,
+.stTextArea > div > div > textarea,
+.stSelectbox > div > div > div,
+.stNumberInput > div > div > input,
+.stDateInput > div > div > input {
+    background: #FFFFFF !important;
+    border-color: #CBD5E1 !important;
+    color: #1E293B !important;
+    border-radius: 0.65rem !important;
+}
+
+.stTextInput > div > div > input:focus,
+.stTextArea > div > div > textarea:focus,
+.stSelectbox > div > div > div:focus,
+.stNumberInput > div > div > input:focus,
+.stDateInput > div > div > input:focus {
+    border-color: #3B82F6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18) !important;
+}
+
+input:focus-visible, textarea:focus-visible, button:focus-visible,
+[role="button"]:focus-visible, [role="tab"]:focus-visible {
+    outline: 3px solid rgba(59, 130, 246, 0.55) !important;
+    outline-offset: 2px !important;
+}
+
+.kpi-card, .complaint-card, .form-section, .map-container,
+[data-testid="stMetric"], [data-testid="stDataFrame"],
+[data-testid="stTable"], [data-testid="stTabs"] {
+    background: #FFFFFF !important;
+    border-color: #E2E8F0 !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.045) !important;
+}
+
+.kpi-card .kpi-label, [data-testid="stMetric"] label {
+    color: #64748B !important;
+}
+
+.kpi-card .kpi-value, [data-testid="stMetric"] [data-testid="stMetricValue"],
+.complaint-card .complaint-title {
+    color: #1E293B !important;
+}
+
+.form-section-title {
+    color: #1E40AF !important;
+    border-bottom-color: #E2E8F0 !important;
+}
+
+.status-submitted-badge {
+    background: #FEF3C7 !important;
+    color: #92400E !important;
+    border-color: #FDE68A !important;
+}
+
+.status-approved-badge, .status-resolved-badge {
+    background: #DCFCE7 !important;
+    color: #166534 !important;
+    border-color: #BBF7D0 !important;
+}
+
+.status-under-review-badge, .status-in-progress-badge {
+    background: #DBEAFE !important;
+    color: #1E40AF !important;
+    border-color: #BFDBFE !important;
+}
+
+.status-rejected-badge {
+    background: #FEE2E2 !important;
+    color: #B91C1C !important;
+    border-color: #FECACA !important;
+}
+
+[data-testid="stTabs"] {
+    background: #FFFFFF !important;
+    border-color: #E2E8F0 !important;
+}
+
+[data-testid="stTabs"] [data-testid="stTab"] {
+    color: #64748B !important;
+}
+
+[data-testid="stTabs"] [data-testid="stTab"][aria-selected="true"] {
+    color: #1E40AF !important;
+}
+
+[data-testid="stTabs"] [data-testid="stTabHighlight"] {
+    background: #1E40AF !important;
+}
+
+[data-testid="stAlert"] {
+    background: #FFFFFF !important;
+    border-color: #E2E8F0 !important;
+}
+
+[data-testid="stExpander"] summary, .streamlit-expanderHeader {
+    background: #F1F5F9 !important;
+    border-color: #E2E8F0 !important;
+    color: #1E293B !important;
+}
+
+.section-divider {
+    border-top-color: #E2E8F0 !important;
+}
+
+.stFileUploader {
+    border-color: #BFDBFE !important;
+    background: #FFFFFF !important;
+}
+
+.stFileUploader:hover {
+    border-color: #3B82F6 !important;
+    background: #F8FBFF !important;
+}
+
+.empty-state-title {
+    color: #1E293B !important;
+}
+
+.civic-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding: 1.25rem 0 0.5rem;
+    border-top: 1px solid #E2E8F0;
+}
+
+.civic-footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.civic-footer-brand strong {
+    color: #1E40AF !important;
+    font-size: 0.92rem;
+}
+
+.civic-footer-brand span {
+    color: #64748B !important;
+    font-size: 0.8rem;
+}
+
+.civic-footer-links {
+    display: flex;
+    gap: 1.1rem;
+}
+
+.civic-footer-links a {
+    color: #1E40AF !important;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.civic-footer-links a:hover {
+    color: #1D4ED8 !important;
+    text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1079,6 +1402,12 @@ label, [data-testid="stWidgetLabel"] p {
     .form-section {
         padding: 1rem !important;
     }
+
+    .civic-footer {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-top: 2rem;
+    }
 }
 </style>
 """
@@ -1088,7 +1417,7 @@ def inject_premium_css() -> None:
     st.markdown(PREMIUM_CSS, unsafe_allow_html=True)
 
 
-def _icon_svg(icon_name: str, color: str = "#657A62", size: int = 16) -> str:
+def _icon_svg(icon_name: str, color: str = "#1E40AF", size: int = 16) -> str:
     """Return a compact outline icon for key public-service UI labels."""
     icons = {
         "default": """
@@ -1198,7 +1527,7 @@ def page_header(title: str, subtitle: str = "") -> None:
         <div class="page-header">
             <div class="page-header-kicker">CIVICPULSE <span aria-hidden="true">·</span> COMMUNITY SERVICES</div>
             <div class="page-header-row">
-                <span class="page-header-icon">{_icon_svg(icon_name, "#405940", 18)}</span>
+                <span class="page-header-icon">{_icon_svg(icon_name, "#1E40AF", 18)}</span>
                 <h1 class="page-title">{title}</h1>
             </div>
             {subtitle_html}
@@ -1229,7 +1558,7 @@ def kpi_card(label: str, value: str) -> None:
         <div class="kpi-card">
             <div class="kpi-row">
                 <div class="kpi-label secondary-text">{label}</div>
-                <span class="kpi-icon">{_icon_svg(icon_name, "#657A62", 14)}</span>
+                <span class="kpi-icon">{_icon_svg(icon_name, "#1E40AF", 14)}</span>
             </div>
             <div class="kpi-value">{value}</div>
         </div>
@@ -1276,7 +1605,7 @@ def complaint_card(
     """Render a clean complaint card."""
     coords_html = ""
     if latitude is not None and longitude is not None:
-        coords_html = f'<br/><span style="font-size:0.8rem;color:#6F786F;">GPS: ({latitude:.4f}, {longitude:.4f})</span>'
+        coords_html = f'<br/><span style="font-size:0.8rem;color:#64748B;">GPS: ({latitude:.4f}, {longitude:.4f})</span>'
 
     img_html = ""
     if show_image and image_path:
@@ -1344,7 +1673,7 @@ def empty_state(
     st.markdown(
         f"""
         <div class="empty-state">
-            <div class="empty-state-icon">{_icon_svg(normalized_icon, "#829078", 28)}</div>
+            <div class="empty-state-icon">{_icon_svg(normalized_icon, "#3B82F6", 28)}</div>
             <h2 class="empty-state-title">{title}</h2>
             <p class="empty-state-description">{description}</p>
         </div>
@@ -1378,6 +1707,27 @@ def section_divider() -> None:
     st.markdown('<hr class="section-divider">', unsafe_allow_html=True)
 
 
+def portal_footer(show_navigation: bool = False) -> None:
+    """Render a compact, responsive brand footer with in-page navigation links."""
+    footer_links = '<a href="#stMain">Back to top</a>'
+    if show_navigation:
+        footer_links += '<a href="#stSidebar">Navigation</a>'
+    st.markdown(
+        f"""
+        <footer class="civic-footer">
+            <div class="civic-footer-brand">
+                <strong>CivicPulse</strong>
+                <span>Community issue reporting and management</span>
+            </div>
+            <div class="civic-footer-links" role="navigation" aria-label="Footer navigation">
+                {footer_links}
+            </div>
+        </footer>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def confirmation_dialog(
     title: str,
     message: str,
@@ -1394,9 +1744,9 @@ def confirmation_dialog(
 
     st.markdown(
         f"""
-        <div style="background-color:#FFFFFF;border:1px solid #E2E5DC;border-radius:10px;padding:1.5rem;margin:1rem 0;">
-            <h3 style="margin-top:0;color:#303A32;font-weight:600;">{title}</h3>
-            <p style="color:#6F786F;margin-bottom:1.5rem;">{message}</p>
+        <div style="background-color:#FFFFFF;border:1px solid #E2E8F0;border-radius:10px;padding:1.5rem;margin:1rem 0;">
+            <h3 style="margin-top:0;color:#1E293B;font-weight:600;">{title}</h3>
+            <p style="color:#64748B;margin-bottom:1.5rem;">{message}</p>
         </div>
         """,
         unsafe_allow_html=True,
