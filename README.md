@@ -100,3 +100,9 @@ python -m uvicorn main:app --reload
 
 ## Suggested viva explanation
 "CivicPulse is a secure civic complaint prototype. Citizens submit an issue with a description, location and optional photo. The backend validates the data, stores the report, and runs a rule-based analysis to suggest the issue category and priority. It also checks for textually similar reports and flags unusual submissions for review. Administrators can view all complaints, change status, and use audit logs to trace important actions. The current AI logic is a baseline and can later be replaced with a trained image classifier and more robust similarity model."
+
+
+
+
+
+sathvik has comited this 
