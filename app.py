@@ -83,7 +83,7 @@ st.set_page_config(
     page_title="Civic Issue Reporting System",
     page_icon=None,
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="auto",
 )
 inject_premium_css()
 def get_status_badge_html(status: str) -> str:
@@ -114,10 +114,14 @@ ADMIN_NAV_OPTIONS = [
 ]
 def set_citizen_page(page_name: str) -> None:
     """Callback to switch citizen navigation page safely before widget instantiation."""
-    st.session_state["_citizen_nav_page"] = page_name
+    page = normalize_nav_choice(page_name, CITIZEN_NAV_OPTIONS)
+    st.session_state["_citizen_nav_page"] = page
+    st.session_state["citizen_nav_radio"] = page
 def set_admin_page(page_name: str) -> None:
     """Callback to switch admin navigation page safely before widget instantiation."""
-    st.session_state["_admin_nav_page"] = page_name
+    page = normalize_nav_choice(page_name, ADMIN_NAV_OPTIONS)
+    st.session_state["_admin_nav_page"] = page
+    st.session_state["admin_nav_radio"] = page
 
 def normalize_nav_choice(choice: str | None, allowed_options: list[str]) -> str:
     """Normalize legacy stored nav values to the live menu labels used by the app."""
@@ -150,10 +154,9 @@ def normalize_nav_choice(choice: str | None, allowed_options: list[str]) -> str:
 def render_auth_view():
     """Renders the public login and citizen registration interface."""
     page_header(
-        "Civic Issue Reporting",
-        "A transparent civic-tech platform for citizens to report issues and municipal authorities to resolve them.",
+        "CivicPulse",
+        "A clearer way to share local concerns, follow progress, and help your neighbourhood thrive.",
     )
-    st.markdown('<div class="form-section">', unsafe_allow_html=True)
     tab_login, tab_register, tab_admin, tab_forgot = st.tabs(
         ["Sign In", "Create Citizen Account", "Create Admin Account", "Forgot Password"]
     )
@@ -267,7 +270,6 @@ def render_auth_view():
                     else:
                         st.error(message)
         st.caption("Works for both citizen and administrator accounts.")
-    st.markdown('</div>', unsafe_allow_html=True)
 # ---------------------------------------------------------
 # View: Citizen - Overview Dashboard
 # ---------------------------------------------------------
@@ -276,6 +278,16 @@ def render_citizen_dashboard(user: dict):
     page_header(
         "Citizen Dashboard",
         "Welcome back. Here is an overview of your reported civic issues.",
+    )
+    st.markdown(
+        """
+        <section class="civic-hero">
+            <div class="civic-hero-kicker">YOUR NEIGHBOURHOOD, YOUR VOICE</div>
+            <h2>Small reports. Real community change.</h2>
+            <p>Share what needs attention nearby and follow each report as it moves toward resolution.</p>
+        </section>
+        """,
+        unsafe_allow_html=True,
     )
     stats = get_citizen_dashboard_stats(user["id"])
     # KPI grid
@@ -321,6 +333,8 @@ def render_citizen_dashboard(user: dict):
             "You haven't reported any civic issues. Click 'Report a New Civic Issue' above to submit your first report.",
             "Report a New Civic Issue",
             "empty_state_report",
+            button_callback=set_citizen_page,
+            button_callback_args=("Report an Issue",),
         )
     else:
         for c in recent_complaints:
@@ -339,6 +353,19 @@ def render_citizen_dashboard(user: dict):
 # ---------------------------------------------------------
 def render_citizen_report_issue(user: dict):
     """Complaint submission form for citizens with AI-assisted classification."""
+    if st.session_state.pop("_clear_citizen_report_form", False):
+        state_prefixes = (
+            "issue_input_",
+            "loc_picker_",
+            "address_search_",
+            "map_link_",
+            "gps_",
+            "location_map_",
+        )
+        for key in tuple(st.session_state):
+            if key.startswith(state_prefixes):
+                st.session_state.pop(key, None)
+
     page_header(
         "Report a Civic Issue",
         "Provide details and photo proof to help municipal crews inspect and resolve the problem.",
@@ -368,6 +395,7 @@ def render_citizen_report_issue(user: dict):
         "Attach Photograph (Optional)",
         type=["jpg", "jpeg", "png", "webp"],
         help="Upload an on-site photo (Max 5MB; JPG, PNG, WEBP).",
+        key="issue_input_image",
     )
     # Image classification (only if image uploaded)
     img_cat = None
@@ -397,7 +425,11 @@ def render_citizen_report_issue(user: dict):
                 ai_suggestion = predicted_cat
                 ai_confidence = confidence_score
                 ai_source = "Text analysis (image uncertain)"
-        comparison = compare_image_and_text(img_cat, predicted_cat, img_conf)
+        comparison = (
+            compare_image_and_text(img_cat, predicted_cat, img_conf)
+            if upload_img is not None
+            else {"warning_message": None}
+        )
         ai_box_html = f"""
         <div style="background-color:#DCE5D8;border:1px solid #E2E5DC;border-radius:10px;padding:1rem;margin:1rem 0;">
             <span style="font-weight:700;color:#303A32;">AI Category Recommendation:</span>
@@ -417,26 +449,12 @@ def render_citizen_report_issue(user: dict):
         </div>
         """
         st.markdown(ai_box_html, unsafe_allow_html=True)
-        # Show suggested title and description (editable)
+        # Show suggested title and description without replacing citizen input.
         suggested_title = generate_suggested_title(img_cat if img_cat else predicted_cat)
-        suggested_desc = generate_suggested_description(img_cat if img_cat else predicted_cat, img_conf)
         st.markdown("**Suggested Title:**")
-        title = st.text_input(
-            "Suggested Title",
-            value=suggested_title if not title else title,
-            key="issue_suggested_title",
-            placeholder="e.g., Deep pothole causing vehicular congestion",
-            label_visibility="collapsed",
-        )
+        st.caption(suggested_title)
         st.markdown("**Suggested Description:**")
-        description = st.text_area(
-            "Suggested Description",
-            value=suggested_desc if not description else description,
-            height=110,
-            key="issue_suggested_desc",
-            placeholder="Explain the severity, impact, and exact spot of the civic issue...",
-            label_visibility="collapsed",
-        )
+        st.caption(generate_suggested_description(img_cat, img_conf))
     close_form_section()
     # Step 3: Category selection
     form_section("Step 3 — Confirm Category")
@@ -503,6 +521,8 @@ def render_citizen_report_issue(user: dict):
                     ai_confidence=ai_confidence,
                 )
             st.session_state["_complaint_submission_result"] = (success, message, complaint_id)
+            if success:
+                st.session_state["_clear_citizen_report_form"] = True
             st.session_state["_complaint_submission_guard"] = None
             st.rerun()
 # ---------------------------------------------------------

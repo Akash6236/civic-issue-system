@@ -461,10 +461,11 @@ def render_location_picker(
             - location_address: str
             - location_source: str ('GPS', 'Manual', or None)
             - location_confirmed: bool
-            - submitted: bool (True if user clicked 'Use This Location')
+            - submitted: bool (True when a usable address is available)
     """
     # Initialize session state for location picker
     state_prefix = "loc_picker_"
+    address_input_key = f"{state_prefix}address_input"
     if f"{state_prefix}lat" not in st.session_state:
         st.session_state[f"{state_prefix}lat"] = default_lat
     if f"{state_prefix}lon" not in st.session_state:
@@ -488,7 +489,7 @@ def render_location_picker(
     st.markdown("### 📍 Select Complaint Location")
     st.caption(
         "Choose how to specify the location of this civic issue. "
-        "Location is optional - you can submit without coordinates."
+        "An address or landmark is required; coordinates are optional."
     )
 
     tab1, tab2, tab3, tab4 = st.tabs(
@@ -502,6 +503,7 @@ def render_location_picker(
             st.session_state[f"{state_prefix}lat"] = lat
             st.session_state[f"{state_prefix}lon"] = lon
             st.session_state[f"{state_prefix}address"] = display_name
+            st.session_state[address_input_key] = display_name
             st.session_state[f"{state_prefix}source"] = "Manual"
             st.session_state[f"{state_prefix}confirmed"] = False
 
@@ -515,6 +517,7 @@ def render_location_picker(
             st.session_state[f"{state_prefix}lat"] = lat
             st.session_state[f"{state_prefix}lon"] = lon
             st.session_state[f"{state_prefix}address"] = address or f"{lat:.6f}, {lon:.6f}"
+            st.session_state[address_input_key] = st.session_state[f"{state_prefix}address"]
             st.session_state[f"{state_prefix}source"] = "GPS"
             st.session_state[f"{state_prefix}confirmed"] = False
 
@@ -527,6 +530,7 @@ def render_location_picker(
             st.session_state[f"{state_prefix}lat"] = lat
             st.session_state[f"{state_prefix}lon"] = lon
             st.session_state[f"{state_prefix}address"] = f"{lat:.6f}, {lon:.6f}"
+            st.session_state[address_input_key] = st.session_state[f"{state_prefix}address"]
             st.session_state[f"{state_prefix}source"] = "Manual"
             st.session_state[f"{state_prefix}confirmed"] = False
 
@@ -537,6 +541,7 @@ def render_location_picker(
             st.session_state[f"{state_prefix}lat"] = lat
             st.session_state[f"{state_prefix}lon"] = lon
             st.session_state[f"{state_prefix}address"] = f"{lat:.6f}, {lon:.6f}"
+            st.session_state[address_input_key] = st.session_state[f"{state_prefix}address"]
             st.session_state[f"{state_prefix}source"] = "Manual"
             st.session_state[f"{state_prefix}confirmed"] = False
 
@@ -545,7 +550,7 @@ def render_location_picker(
     address_input = st.text_input(
         "Address description",
         value=st.session_state.get(f"{state_prefix}address", default_address),
-        key=f"{state_prefix}address_input",
+        key=address_input_key,
         placeholder="e.g., Near City Hospital Gate 2, MG Road",
         help="Describe the location in plain text.",
     )
@@ -613,8 +618,8 @@ def render_location_picker(
             result["submitted"] = True
     else:
         st.info(
-            "No location selected yet. Enter an address or use one of the methods above "
-            "to choose a location, or leave blank to submit without coordinates."
+            "No location selected yet. Enter an address or landmark, or use one of the "
+            "methods above. You can submit an address without coordinates."
         )
 
     # If previously confirmed, populate result

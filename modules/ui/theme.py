@@ -23,7 +23,7 @@ Typography: Inter (headings and body)
 """
 
 import streamlit as st
-from typing import Optional
+from typing import Callable, Optional, Tuple
 
 # ---------------------------------------------------------
 # Design Tokens
@@ -69,8 +69,8 @@ COLORS = {
 
 PREMIUM_CSS = """
 <style>
-/* Import Inter typography */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* Import typography */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
 
 /* ===== GLOBAL BASE STYLES ===== */
 html, body, [data-testid="stAppViewContainer"] {
@@ -667,6 +667,419 @@ label {
     font-weight: 700 !important;
     color: #303A32 !important;
 }
+
+/* ===== CIVICPULSE EARTH-TONE REFRESH ===== */
+:root {
+    --earth-bg: #F4F2EA;
+    --earth-paper: #FCFBF7;
+    --earth-ink: #29352D;
+    --earth-muted: #72786B;
+    --earth-forest: #405940;
+    --earth-olive: #65744D;
+    --earth-sage: #E5E8DC;
+    --earth-sand: #EDE5D5;
+    --earth-clay: #A96546;
+    --earth-border: #E4E0D4;
+    --earth-shadow: 0 12px 32px rgba(48, 57, 43, 0.06);
+}
+
+html, body, [data-testid="stAppViewContainer"],
+[data-testid="stAppViewContainer"] > .main,
+.block-container {
+    background: var(--earth-bg) !important;
+    color: var(--earth-ink) !important;
+    font-family: "DM Sans", "Segoe UI", sans-serif !important;
+}
+
+[data-testid="stAppViewContainer"] {
+    background-image:
+        radial-gradient(ellipse at 92% 0%, rgba(205, 194, 162, 0.18), transparent 34%),
+        linear-gradient(180deg, #F7F5EF 0%, var(--earth-bg) 34rem) !important;
+}
+
+.block-container {
+    max-width: 1360px !important;
+    padding: 4.25rem clamp(1.25rem, 4vw, 3.75rem) 3rem !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--earth-ink) !important;
+    font-family: "DM Sans", "Segoe UI", sans-serif !important;
+    letter-spacing: -0.035em !important;
+}
+
+h1, .page-title {
+    font-size: clamp(1.8rem, 3vw, 2.35rem) !important;
+    font-weight: 700 !important;
+}
+
+h2 {
+    font-size: 1.45rem !important;
+    font-weight: 650 !important;
+}
+
+p, .secondary-text, .page-subtitle {
+    color: var(--earth-muted) !important;
+}
+
+[data-testid="stCaptionContainer"] p {
+    color: var(--earth-muted) !important;
+}
+
+.page-header {
+    margin: 0 0 2rem !important;
+    padding: 0 0 1.35rem !important;
+    border-bottom: 1px solid var(--earth-border) !important;
+}
+
+.page-header-kicker {
+    color: var(--earth-olive) !important;
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.16em !important;
+    margin-bottom: 0.65rem !important;
+}
+
+.page-header-row {
+    gap: 0.85rem !important;
+    margin-bottom: 0.4rem !important;
+}
+
+.page-header-icon {
+    width: 2.7rem !important;
+    height: 2.7rem !important;
+    border-radius: 0.85rem !important;
+    background: var(--earth-sage) !important;
+    border: 1px solid #D9DECE !important;
+    color: var(--earth-forest) !important;
+}
+
+.page-subtitle {
+    font-size: 0.96rem !important;
+    line-height: 1.65 !important;
+    max-width: 760px !important;
+}
+
+/* Spacious, grounded navigation */
+[data-testid="stSidebar"] {
+    background: #F9F8F3 !important;
+    border-right: 1px solid var(--earth-border) !important;
+    box-shadow: 6px 0 24px rgba(48, 57, 43, 0.025) !important;
+    padding: 1.5rem 1rem !important;
+    width: 278px !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
+    color: var(--earth-ink) !important;
+}
+
+.sidebar-brand {
+    color: var(--earth-forest) !important;
+    font-size: 1.4rem !important;
+    letter-spacing: -0.045em !important;
+    margin: 0.35rem 0 1.7rem !important;
+}
+
+.sidebar-user-name {
+    font-size: 0.98rem !important;
+    color: var(--earth-ink) !important;
+}
+
+.sidebar-user-email, .sidebar-section-label {
+    color: var(--earth-muted) !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label {
+    padding: 0.7rem 0.85rem !important;
+    margin: 0.2rem 0 !important;
+    border-radius: 0.7rem !important;
+    color: #626B5F !important;
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+    border: 1px solid transparent !important;
+    transition: background 160ms ease, color 160ms ease, border 160ms ease !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label:hover {
+    color: var(--earth-forest) !important;
+    background: #EEF0E7 !important;
+    border-color: #E1E5D9 !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input:checked) {
+    color: var(--earth-forest) !important;
+    background: #E7EBDD !important;
+    border-color: #DCE2D3 !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input:checked) p,
+[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input:checked) span {
+    color: var(--earth-forest) !important;
+}
+
+/* Buttons */
+.stButton > button, [data-testid="stFormSubmitButton"] > button {
+    min-height: 2.75rem !important;
+    border-radius: 0.7rem !important;
+    font-family: "DM Sans", "Segoe UI", sans-serif !important;
+    font-size: 0.9rem !important;
+    font-weight: 650 !important;
+    transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease !important;
+}
+
+.stButton > button[kind="primary"],
+[data-testid="stFormSubmitButton"] > button[kind="primary"] {
+    background: var(--earth-forest) !important;
+    border: 1px solid var(--earth-forest) !important;
+    color: #FFFDF7 !important;
+    box-shadow: 0 4px 10px rgba(64, 89, 64, 0.14) !important;
+}
+
+.stButton > button[kind="primary"]:hover,
+[data-testid="stFormSubmitButton"] > button[kind="primary"]:hover {
+    background: #334A36 !important;
+    border-color: #334A36 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 7px 16px rgba(64, 89, 64, 0.2) !important;
+}
+
+.stButton > button[kind="secondary"],
+[data-testid="stFormSubmitButton"] > button[kind="secondary"] {
+    background: var(--earth-paper) !important;
+    color: var(--earth-forest) !important;
+    border: 1px solid #D8DCCF !important;
+}
+
+.stButton > button[kind="secondary"]:hover,
+[data-testid="stFormSubmitButton"] > button[kind="secondary"]:hover {
+    background: #EEF0E7 !important;
+    border-color: #BFC9B6 !important;
+}
+
+/* Inputs and selection controls */
+.stTextInput > div > div > input,
+.stTextArea > div > div > textarea,
+.stNumberInput > div > div > input,
+[data-baseweb="select"] > div {
+    background: var(--earth-paper) !important;
+    border: 1px solid #DCD9CD !important;
+    border-radius: 0.65rem !important;
+    color: var(--earth-ink) !important;
+    min-height: 2.85rem !important;
+    box-shadow: inset 0 1px 2px rgba(48, 57, 43, 0.025) !important;
+}
+
+.stTextInput > div > div > input:focus,
+.stTextArea > div > div > textarea:focus,
+.stNumberInput > div > div > input:focus,
+[data-baseweb="select"] > div:focus-within {
+    border-color: var(--earth-olive) !important;
+    box-shadow: 0 0 0 3px rgba(101, 116, 77, 0.14) !important;
+}
+
+label, [data-testid="stWidgetLabel"] p {
+    color: #384438 !important;
+    font-size: 0.82rem !important;
+    font-weight: 650 !important;
+}
+
+/* Surface components */
+.kpi-card, .complaint-card, .form-section,
+[data-testid="stMetric"], [data-testid="stForm"],
+[data-testid="stExpander"] {
+    background: var(--earth-paper) !important;
+    border: 1px solid var(--earth-border) !important;
+    border-radius: 1rem !important;
+    box-shadow: var(--earth-shadow) !important;
+}
+
+.kpi-card {
+    padding: 1.15rem 1.25rem !important;
+    min-height: 118px !important;
+    transition: transform 180ms ease, box-shadow 180ms ease !important;
+}
+
+.kpi-card:hover, .complaint-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 16px 34px rgba(48, 57, 43, 0.09) !important;
+}
+
+.kpi-card .kpi-label {
+    color: var(--earth-muted) !important;
+    font-size: 0.68rem !important;
+    letter-spacing: 0.11em !important;
+}
+
+.kpi-card .kpi-value {
+    color: var(--earth-ink) !important;
+    font-size: 1.8rem !important;
+    font-weight: 700 !important;
+}
+
+.kpi-card .kpi-icon {
+    background: var(--earth-sage) !important;
+    border: 1px solid #D9DECE !important;
+    color: var(--earth-forest) !important;
+}
+
+.complaint-card {
+    border-radius: 0.9rem !important;
+    padding: 1.15rem 1.25rem !important;
+}
+
+.complaint-card .complaint-title {
+    color: var(--earth-ink) !important;
+    font-size: 1rem !important;
+}
+
+.complaint-card .complaint-meta {
+    color: var(--earth-muted) !important;
+}
+
+.form-section {
+    padding: 1.35rem !important;
+    margin-bottom: 1.2rem !important;
+    box-shadow: 0 5px 18px rgba(48, 57, 43, 0.035) !important;
+}
+
+.form-section-title {
+    color: var(--earth-forest) !important;
+    border-bottom-color: var(--earth-border) !important;
+}
+
+.status-submitted-badge, .status-approved-badge, .status-in-progress-badge {
+    background: var(--earth-sand) !important;
+    color: #765C36 !important;
+    border-color: #E4D9C3 !important;
+}
+
+.status-under-review-badge, .status-resolved-badge {
+    background: var(--earth-sage) !important;
+    color: var(--earth-forest) !important;
+    border-color: #D9DECE !important;
+}
+
+.status-rejected-badge {
+    background: #F1E3DA !important;
+    color: #8F503A !important;
+    border-color: #E7D2C5 !important;
+}
+
+[data-testid="stTabs"] [data-testid="stTab"] {
+    color: #72786B !important;
+    font-weight: 600 !important;
+}
+
+[data-testid="stTabs"] {
+    padding: 0.8rem 1rem 1rem !important;
+    background: var(--earth-paper) !important;
+    border: 1px solid var(--earth-border) !important;
+    border-radius: 1rem !important;
+    box-shadow: var(--earth-shadow) !important;
+}
+
+[data-testid="stTabs"] [data-testid="stTab"][aria-selected="true"] {
+    color: var(--earth-forest) !important;
+}
+
+[data-testid="stTabs"] [data-testid="stTabHighlight"] {
+    background: var(--earth-olive) !important;
+}
+
+[data-testid="stAlert"] {
+    border-radius: 0.8rem !important;
+    border: 1px solid var(--earth-border) !important;
+    background: #FBFAF5 !important;
+}
+
+[data-testid="stExpander"] {
+    overflow: hidden !important;
+}
+
+[data-testid="stExpander"] summary {
+    background: #F8F7F1 !important;
+    color: var(--earth-ink) !important;
+    font-weight: 600 !important;
+}
+
+.section-divider {
+    border-top-color: var(--earth-border) !important;
+    margin: 1.8rem 0 !important;
+}
+
+.civic-hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.5rem, 4vw, 2.6rem);
+    margin: 0 0 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 1.25rem;
+    background:
+        radial-gradient(circle at 88% 18%, rgba(205, 190, 145, 0.26), transparent 25%),
+        linear-gradient(118deg, #344D3A 0%, #526849 60%, #69734E 100%);
+    box-shadow: 0 16px 36px rgba(47, 68, 48, 0.16);
+}
+
+.civic-hero:after {
+    content: "";
+    position: absolute;
+    width: 210px;
+    height: 210px;
+    right: -78px;
+    bottom: -132px;
+    border: 1px solid rgba(255, 255, 255, 0.17);
+    border-radius: 50%;
+    box-shadow: 0 0 0 24px rgba(255,255,255,0.035), 0 0 0 50px rgba(255,255,255,0.025);
+}
+
+.civic-hero-kicker {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0.65rem;
+    color: #D8DDC6 !important;
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.16em !important;
+}
+
+.civic-hero h2 {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 0.6rem !important;
+    color: #FFFDF6 !important;
+    font-family: "DM Serif Display", Georgia, serif !important;
+    font-size: clamp(1.8rem, 3.4vw, 2.65rem) !important;
+    font-weight: 400 !important;
+    letter-spacing: -0.025em !important;
+}
+
+.civic-hero p {
+    position: relative;
+    z-index: 1;
+    max-width: 650px;
+    margin: 0 !important;
+    color: #E4E6D8 !important;
+    font-size: 0.95rem !important;
+}
+
+@media (max-width: 768px) {
+    .block-container {
+        padding: 3.75rem 1rem 2rem !important;
+    }
+
+    .page-header {
+        margin-bottom: 1.4rem !important;
+    }
+
+    .kpi-card {
+        min-height: 104px !important;
+        padding: 0.9rem !important;
+    }
+
+    .form-section {
+        padding: 1rem !important;
+    }
+}
 </style>
 """
 
@@ -779,13 +1192,20 @@ def page_header(title: str, subtitle: str = "") -> None:
     else:
         icon_name = "file"
 
+    subtitle_html = f'<p class="page-subtitle secondary-text">{subtitle}</p>' if subtitle else ""
     st.markdown(
-        f'<div class="page-header"><div class="page-header-row"><span class="page-header-icon">{_icon_svg(icon_name, "#657A62", 18)}</span><h1 class="page-title">{title}</h1></div>',
+        f"""
+        <div class="page-header">
+            <div class="page-header-kicker">CIVICPULSE <span aria-hidden="true">·</span> COMMUNITY SERVICES</div>
+            <div class="page-header-row">
+                <span class="page-header-icon">{_icon_svg(icon_name, "#405940", 18)}</span>
+                <h1 class="page-title">{title}</h1>
+            </div>
+            {subtitle_html}
+        </div>
+        """,
         unsafe_allow_html=True,
     )
-    if subtitle:
-        st.markdown(f'<p class="page-subtitle secondary-text">{subtitle}</p>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 
 def kpi_card(label: str, value: str) -> None:
@@ -901,7 +1321,15 @@ def complaint_card(
     st.markdown('</div>', unsafe_allow_html=True)
 
 
-def empty_state(icon: str, title: str, description: str, button_label: str = "", button_key: str = "") -> None:
+def empty_state(
+    icon: str,
+    title: str,
+    description: str,
+    button_label: str = "",
+    button_key: str = "",
+    button_callback: Optional[Callable[..., None]] = None,
+    button_callback_args: Tuple[str, ...] = (),
+) -> None:
     """Render a well-designed empty state with a civic-style icon."""
     icon_map = {
         "📭": "file",
@@ -924,7 +1352,14 @@ def empty_state(icon: str, title: str, description: str, button_label: str = "",
         unsafe_allow_html=True,
     )
     if button_label and button_key:
-        if st.button(button_label, key=button_key, type="primary", use_container_width=True):
+        if st.button(
+            button_label,
+            key=button_key,
+            type="primary",
+            use_container_width=True,
+            on_click=button_callback,
+            args=button_callback_args,
+        ):
             st.session_state["_empty_state_action"] = button_key
 
 
