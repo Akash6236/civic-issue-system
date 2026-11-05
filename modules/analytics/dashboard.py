@@ -17,12 +17,12 @@ from modules.database import get_connection
 
 # Visual theme colors matching our civic-tech palette
 STATUS_COLORS = {
-    "Submitted": "#A0AEC0",
-    "Under Review": "#3182CE",
-    "Approved": "#D69E2E",
-    "In Progress": "#DD6B20",
-    "Resolved": "#38A169",
-    "Rejected": "#E53E3E",
+    "Submitted": "#C49B59",
+    "Under Review": "#657A62",
+    "Approved": "#C49B59",
+    "In Progress": "#C49B59",
+    "Resolved": "#657A62",
+    "Rejected": "#B87568",
 }
 
 
@@ -252,17 +252,17 @@ def build_monthly_resolved_vs_received_chart(
         name="Received",
         x=df["month"],
         y=df["received"],
-        marker_color="#34483D",
+        marker_color="#657A62",
     ))
     fig.add_trace(go.Bar(
         name="Resolved",
         x=df["month"],
         y=df["resolved"],
-        marker_color="#B7A98F",
+        marker_color="#718B69",
     ))
 
     fig.update_layout(
-        title=dict(text=title, font=dict(size=16, color="#343A36")),
+        title=dict(text=title, font=dict(size=16, color="#303A32")),
         barmode="group",
         xaxis=dict(title="Month"),
         yaxis=dict(title="Count", dtick=1),
@@ -296,7 +296,7 @@ def build_status_donut_chart(status_list: List[Dict[str, Any]], title: str = "St
         ]
     )
     fig.update_layout(
-        title=dict(text=title, font=dict(size=16, color="#1B365D")),
+        title=dict(text=title, font=dict(size=16, color="#303A32")),
         margin=dict(l=20, r=20, t=40, b=20),
         legend=dict(orientation="h", yanchor="bottom", y=-0.2, xanchor="center", x=0.5),
         height=320,
@@ -321,8 +321,8 @@ def build_category_bar_chart(category_list: List[Dict[str, Any]], title: str = "
                 y=df["category"],
                 orientation="h",
                 marker=dict(
-                    color="#2B6CB0",
-                    line=dict(color="#1A365D", width=1),
+                    color="#657A62",
+                    line=dict(color="#52674F", width=1),
                 ),
                 text=df["count"],
                 textposition="auto",
@@ -330,7 +330,7 @@ def build_category_bar_chart(category_list: List[Dict[str, Any]], title: str = "
         ]
     )
     fig.update_layout(
-        title=dict(text=title, font=dict(size=16, color="#1B365D")),
+        title=dict(text=title, font=dict(size=16, color="#303A32")),
         xaxis=dict(title="Complaint Count", dtick=1),
         yaxis=dict(title=""),
         margin=dict(l=20, r=20, t=40, b=20),
@@ -355,14 +355,14 @@ def build_monthly_trend_chart(monthly_list: List[Dict[str, Any]], title: str = "
                 y=df["count"],
                 mode="lines+markers",
                 fill="tozeroy",
-                fillcolor="rgba(43, 108, 176, 0.15)",
-                line=dict(color="#2B6CB0", width=3),
-                marker=dict(size=8, color="#1A365D"),
+                fillcolor="rgba(36, 91, 69, 0.15)",
+                line=dict(color="#657A62", width=3),
+                marker=dict(size=8, color="#52674F"),
             )
         ]
     )
     fig.update_layout(
-        title=dict(text=title, font=dict(size=16, color="#1B365D")),
+        title=dict(text=title, font=dict(size=16, color="#303A32")),
         xaxis=dict(title="Month (YYYY-MM)"),
         yaxis=dict(title="Reported Issues", dtick=1),
         margin=dict(l=20, r=20, t=40, b=20),

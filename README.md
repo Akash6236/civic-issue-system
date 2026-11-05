@@ -46,6 +46,28 @@ python -m pip install -r requirements.txt
 
 4. Open your browser to `http://localhost:8501`.
 
+## Team Setup (for teammates cloning the project)
+Each teammate gets their own local SQLite database. Do not share the `.db` file through git — run the seed script once to create the shared admin account:
+
+```powershell
+# 1. Clone the project
+git clone <your-repo-url>
+cd civic-issue-system
+
+# 2. Create and activate virtual environment
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+# 3. Install dependencies
+python -m pip install -r requirements.txt
+
+# 4. Seed the database (creates the shared admin account)
+python utils/seed_db.py
+
+# 5. Run the app
+python -m streamlit run app.py --server.port 8501 --server.headless true
+```
+
 ## Administrator Credentials
 A single administrator account is pre-configured for this project:
 

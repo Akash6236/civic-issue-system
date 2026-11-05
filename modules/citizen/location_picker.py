@@ -198,7 +198,7 @@ def _render_gps_button() -> Optional[Tuple[float, float]]:
         <style>
             body { font-family: Arial, sans-serif; padding: 10px; }
             button {
-                background-color: #34483D;
+                background-color: #657A62;
                 color: white;
                 border: none;
                 padding: 10px 20px;
@@ -560,11 +560,11 @@ def render_location_picker(
 
         st.markdown(
             f"""
-            <div style="background-color:#F6F0E3;border:1px solid #D8D6CF;border-radius:8px;padding:1rem;margin:1rem 0;">
-                <h4 style="margin:0 0 0.5rem 0;color:#34483D;font-size:1rem;">Selected Location</h4>
-                <p style="margin:0;color:#343A36;font-size:0.9rem;"><strong>Address:</strong> {address_input or f"{current_lat:.6f}, {current_lon:.6f}"}</p>
-                <p style="margin:0;color:#747A74;font-size:0.85rem;"><strong>Source:</strong> {source_label}</p>
-                <p style="margin:0;color:#747A74;font-size:0.85rem;"><strong>Coordinates:</strong> ({current_lat:.6f}, {current_lon:.6f})</p>
+            <div style="background-color:#E9E2D5;border:1px solid #E2E5DC;border-radius:8px;padding:1rem;margin:1rem 0;">
+                <h4 style="margin:0 0 0.5rem 0;color:#303A32;font-size:1rem;">Selected Location</h4>
+                <p style="margin:0;color:#303A32;font-size:0.9rem;"><strong>Address:</strong> {address_input or f"{current_lat:.6f}, {current_lon:.6f}"}</p>
+                <p style="margin:0;color:#6F786F;font-size:0.85rem;"><strong>Source:</strong> {source_label}</p>
+                <p style="margin:0;color:#6F786F;font-size:0.85rem;"><strong>Coordinates:</strong> ({current_lat:.6f}, {current_lon:.6f})</p>
             </div>
             """,
             unsafe_allow_html=True,

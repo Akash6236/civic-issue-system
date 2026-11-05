@@ -262,6 +262,7 @@ def render_admin_complaint_map(user: Dict[str, Any]) -> None:
         st.info("No complaints with location data match the selected filters.")
         return
 
+    st.markdown('<div class="map-container">', unsafe_allow_html=True)
     st.caption(f"Showing {len(complaints)} complaint(s) with location data.")
 
     center = _default_center(complaints)
@@ -276,6 +277,21 @@ def render_admin_complaint_map(user: Dict[str, Any]) -> None:
             "cannot be loaded (e.g., no internet connection or tile service issues). "
             f"Details: {err}"
         )
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown(
+        '<div class="map-legend">'
+        '<strong>Legend:</strong> '
+        '<span style="color:#657A62;">■</span> Garbage · '
+        '<span style="color:#C49B59;">■</span> Road Damage · '
+        '<span style="color:#8299A0;">■</span> Water Leakage · '
+        '<span style="color:#657A62;">■</span> Streetlight · '
+        '<span style="color:#8299A0;">■</span> Drainage · '
+        '<span style="color:#B87568;">■</span> Public Sanitation · '
+        '<span style="color:#6F786F;">■</span> Other'
+        '</div>',
+        unsafe_allow_html=True,
+    )
 
 
 def render_citizen_complaint_map(user: Dict[str, Any]) -> None:
@@ -291,6 +307,7 @@ def render_citizen_complaint_map(user: Dict[str, Any]) -> None:
         st.info("You have no complaints with location data to display on a map.")
         return
 
+    st.markdown('<div class="map-container">', unsafe_allow_html=True)
     st.caption(f"Showing {len(complaints)} of your complaint(s) with location data.")
 
     center = _default_center(complaints)
@@ -305,3 +322,18 @@ def render_citizen_complaint_map(user: Dict[str, Any]) -> None:
             "cannot be loaded (e.g., no internet connection or tile service issues). "
             f"Details: {err}"
         )
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown(
+        '<div class="map-legend">'
+        '<strong>Legend:</strong> '
+        '<span style="color:#657A62;">■</span> Garbage · '
+        '<span style="color:#C49B59;">■</span> Road Damage · '
+        '<span style="color:#8299A0;">■</span> Water Leakage · '
+        '<span style="color:#657A62;">■</span> Streetlight · '
+        '<span style="color:#8299A0;">■</span> Drainage · '
+        '<span style="color:#B87568;">■</span> Public Sanitation · '
+        '<span style="color:#6F786F;">■</span> Other'
+        '</div>',
+        unsafe_allow_html=True,
+    )
